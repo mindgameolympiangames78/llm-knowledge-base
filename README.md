@@ -8,17 +8,50 @@ Uses **Obsidian** as the viewer and frontend.
 
 ## How It Works
 
-```
-/kb-ingest  →  raw/          stage new content
-/kb-compile →  wiki/         LLM processes raw → articles, concepts, backlinks
-                  ↓
-             /kb-reflect      LLM finds cross-cutting connections → synthesis articles (auto)
-                  ↓
-/kb-ask     →  outputs/       Q&A against the wiki, answers filed back in
-/kb-lint    →  report         health checks: thin articles, broken links, duplicates
-/kb-merge                     merge duplicate concepts, update all backlinks
-/kb-output  →  slides / PNG   render wiki content as Marp slides or charts
-kb_search   →  JSON           fast keyword + semantic search (used by Claude internally)
+```mermaid
+flowchart TD
+    subgraph input["📥 Your Content"]
+        A1[URLs]
+        A2[PDFs]
+        A3[Images]
+        A4[Notes]
+    end
+
+    ingest["/kb-ingest"]
+    raw["raw/\nstaged content"]
+    compile["/kb-compile"]
+
+    subgraph wiki["🧠 wiki/  —  LLM-managed"]
+        index["index.md\nnavigation layer"]
+        concepts["concepts/\none article per concept"]
+        sources["sources/\none summary per source"]
+        archive["archive/\nabsorbed articles"]
+    end
+
+    reflect["/kb-reflect\n✦ auto-runs after compile"]
+    search["kb_search.py\nkeyword + semantic"]
+
+    ask["/kb-ask"]
+    lint["/kb-lint"]
+    merge["/kb-merge"]
+    output["/kb-output"]
+
+    subgraph out["📤 outputs/"]
+        answers["Q&A answers"]
+        reports["lint & reflect reports"]
+        rendered["slides & charts"]
+    end
+
+    input --> ingest --> raw --> compile --> wiki
+    compile -. auto .-> reflect
+    reflect -- synthesis articles --> concepts
+    wiki --> search
+    search -. used by .-> ask
+    index --> ask --> answers
+    answers -. filed back .-> index
+    wiki --> lint --> reports
+    wiki --> merge --> archive
+    wiki --> output --> rendered
 ```
 
 The wiki grows smarter with every compile cycle. Q&A answers compound on each other. The LLM owns `wiki/` and `outputs/` — you own `raw/`.

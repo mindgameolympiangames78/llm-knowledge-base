@@ -77,7 +77,7 @@ echo "Installed kb_search.py to $KB_PATH"
 
 echo ""
 echo "Done! Open $KB_PATH in Obsidian."
-echo "Skills available: /kb-ingest, /kb-compile, /kb-ask, /kb-lint, /kb-output, /kb-reflect, /kb-merge"
+echo "Skills available: /kb-ingest, /kb-import, /kb-compile, /kb-ask, /kb-lint, /kb-output, /kb-reflect, /kb-merge, /kb-merge-vault"
 echo "Search tool: python3 $KB_PATH/kb_search.py \"query\""
 echo ""
 echo "To install Python dependencies: pip install -r requirements.txt"

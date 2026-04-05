@@ -103,6 +103,37 @@ bash setup.sh ~/knowledge-base
 
 ## Skills
 
+### `/kb-import <vault-path>`
+
+Import an existing Obsidian vault into the knowledge base. Inspects each note and routes it intelligently:
+
+```
+/kb-import ~/my-old-obsidian-vault
+```
+
+- **Concept articles** (structured, reference-style notes) → `wiki/concepts/` directly, preserving existing `[[wikilinks]]`
+- **Raw research notes** (fleeting notes, source references, unstructured content) → `raw/notes/` for compilation
+
+After import, prompts to run `/kb-compile` to process the raw notes.
+
+---
+
+### `/kb-merge-vault <vault-path>`
+
+Merge a second KB vault into the current one.
+
+```
+/kb-merge-vault ~/knowledge-base-work
+```
+
+- Non-conflicting files are copied as-is
+- Conflicting concept and source articles are auto-merged using LLM synthesis (same logic as `/kb-merge`)
+- `manifest.json` and `wiki/index.md` are merged and deduplicated
+- `reflect_state.json` is reset so the next `/kb-reflect` discovers connections across both vaults
+- Prompts to run `/kb-reflect` after merging
+
+---
+
 ### `/kb-ingest <source>`
 
 Stage content into `raw/`. Does not compile yet.

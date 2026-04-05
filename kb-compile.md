@@ -178,7 +178,11 @@ cd {KB_PATH} && git add -A && git commit -m "kb: compile {N} source(s) into wiki
 
 Where N is the count of files just compiled.
 
-### 8. Print Summary
+### 8. Run Reflect
+
+Invoke the `/kb-reflect` skill to discover connections across newly compiled content.
+
+### 9. Print Summary
 
 ```
 Compiled {N} file(s):

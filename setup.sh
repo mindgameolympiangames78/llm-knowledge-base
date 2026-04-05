@@ -72,6 +72,8 @@ cp "$SCRIPT_DIR/kb-compile.md" "$SKILLS_DIR/kb-compile.md"
 cp "$SCRIPT_DIR/kb-ask.md" "$SKILLS_DIR/kb-ask.md"
 cp "$SCRIPT_DIR/kb-lint.md" "$SKILLS_DIR/kb-lint.md"
 cp "$SCRIPT_DIR/kb-output.md" "$SKILLS_DIR/kb-output.md"
+cp "$SCRIPT_DIR/kb-reflect.md" "$SKILLS_DIR/kb-reflect.md"
+cp "$SCRIPT_DIR/kb-merge.md" "$SKILLS_DIR/kb-merge.md"
 echo "Installed skills to $SKILLS_DIR"
 
 # Install search tool into KB directory
@@ -81,7 +83,7 @@ echo "Installed kb_search.py to $KB_PATH"
 
 echo ""
 echo "Done! Open $KB_PATH in Obsidian."
-echo "Skills available: /kb-ingest, /kb-compile, /kb-ask, /kb-lint, /kb-output"
+echo "Skills available: /kb-ingest, /kb-compile, /kb-ask, /kb-lint, /kb-output, /kb-reflect, /kb-merge"
 echo "Search tool: python3 $KB_PATH/kb_search.py \"query\""
 echo ""
 echo "Optional: pip install sentence-transformers  (for semantic search)"

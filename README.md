@@ -128,6 +128,44 @@ Repeat. The wiki grows smarter with every ingest + compile cycle. Q&A answers ar
 
 ---
 
+### `/kb-reflect`
+
+Discover non-obvious connections across the wiki and write synthesis articles. Runs automatically after every `/kb-compile`, or manually on demand.
+
+```
+/kb-reflect
+```
+
+Two-stage process:
+1. **Discovery** — reads `wiki/index.md` only, identifies 3–5 strongest connection candidates (cross-cutting themes, implicit relationships, contradictions, gaps)
+2. **Synthesis** — deep-reads relevant articles for each candidate, writes a new synthesis article to `wiki/concepts/` if evidence is strong enough
+
+Output: new `type: synthesis` concept articles + `outputs/YYYY-MM-DD-kb-reflect-report.md` with a summary of what was found, what was written, and suggested follow-up ingestion.
+
+State tracked in `.kb/reflect_state.json` — only considers newly compiled content on incremental runs.
+
+---
+
+### `/kb-merge <slug-a> <slug-b>` or `/kb-merge`
+
+Merge duplicate or related concept articles.
+
+```
+# Explicit merge
+/kb-merge attention attention-mechanism
+
+# Auto-detect duplicates and confirm interactively
+/kb-merge
+```
+
+For each merge:
+- LLM synthesizes both articles into one clean merged article
+- All `[[backlinks]]` across `wiki/` and `outputs/` updated to point to the kept slug
+- Absorbed article archived to `wiki/archive/` with a redirect note
+- `wiki/index.md` updated, one git commit per merge pair
+
+---
+
 ### `/kb-lint`
 
 Run health checks on the wiki.

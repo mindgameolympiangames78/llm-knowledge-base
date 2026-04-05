@@ -160,7 +160,17 @@ After processing all uncompiled files:
 1. Write the full updated `wiki/index.md` back to disk (with all appended entries)
 2. Write the full updated manifest back to `{KB_PATH}/.kb/manifest.json`
 
-### 6. Commit Changes
+### 6. Rebuild Search Index
+
+If `kb_search.py` exists in `{KB_PATH}`, rebuild the search index:
+
+```bash
+python3 {KB_PATH}/kb_search.py --rebuild
+```
+
+If the file doesn't exist (first run before search tool is installed), skip this step silently.
+
+### 7. Commit Changes
 
 ```bash
 cd {KB_PATH} && git add -A && git commit -m "kb: compile {N} source(s) into wiki"
@@ -168,7 +178,7 @@ cd {KB_PATH} && git add -A && git commit -m "kb: compile {N} source(s) into wiki
 
 Where N is the count of files just compiled.
 
-### 7. Print Summary
+### 8. Print Summary
 
 ```
 Compiled {N} file(s):

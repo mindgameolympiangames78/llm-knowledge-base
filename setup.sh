@@ -74,6 +74,14 @@ cp "$SCRIPT_DIR/kb-lint.md" "$SKILLS_DIR/kb-lint.md"
 cp "$SCRIPT_DIR/kb-output.md" "$SKILLS_DIR/kb-output.md"
 echo "Installed skills to $SKILLS_DIR"
 
+# Install search tool into KB directory
+cp "$SCRIPT_DIR/kb_search.py" "$KB_PATH/kb_search.py"
+chmod +x "$KB_PATH/kb_search.py"
+echo "Installed kb_search.py to $KB_PATH"
+
 echo ""
 echo "Done! Open $KB_PATH in Obsidian."
 echo "Skills available: /kb-ingest, /kb-compile, /kb-ask, /kb-lint, /kb-output"
+echo "Search tool: python3 $KB_PATH/kb_search.py \"query\""
+echo ""
+echo "Optional: pip install sentence-transformers  (for semantic search)"

@@ -128,6 +128,65 @@ Repeat. The wiki grows smarter with every ingest + compile cycle. Q&A answers ar
 
 ---
 
+### `/kb-lint`
+
+Run health checks on the wiki.
+
+```
+/kb-lint
+```
+
+Checks:
+- **Thin articles** — concept articles with < 3 sentences
+- **Missing concepts** — `[[concepts/X]]` links in sources with no article
+- **Broken wikilinks** — links pointing to non-existent files
+- **Duplicate concepts** — near-duplicate concept slugs to consider merging
+- **New article suggestions** — gaps in the wiki + optional web search for missing details
+
+Prints a terminal summary and saves a full report to `outputs/YYYY-MM-DD-kb-lint-report.md`.
+
+---
+
+### `/kb-output --slides <question|file>` / `/kb-output --chart <question|file>`
+
+Render wiki content as a Marp slideshow or matplotlib chart.
+
+```
+# From a question (researches the wiki first)
+/kb-output --slides what is the transformer architecture?
+/kb-output --chart compare attention mechanisms across papers
+
+# From an existing output file
+/kb-output --slides outputs/2026-04-05-what-is-attention.md
+/kb-output --chart outputs/2026-04-05-benchmark-comparison.md
+```
+
+- Slides saved to `outputs/YYYY-MM-DD-<slug>-slides.md` (Marp format)
+- Charts saved to `outputs/YYYY-MM-DD-<slug>-chart.png`
+
+Requires: `pip install matplotlib networkx`
+
+---
+
+### Search Tool (`kb_search.py`)
+
+Fast search over the wiki — keyword search with semantic fallback. Installed into your KB directory by `setup.sh`. Claude uses this automatically during large queries.
+
+```bash
+# Rebuild index (run after /kb-compile, or manually)
+python3 ~/knowledge-base/kb_search.py --rebuild
+
+# Search
+python3 ~/knowledge-base/kb_search.py "attention mechanism"
+python3 ~/knowledge-base/kb_search.py "how do LLM agents work" --top 10
+```
+
+Output is JSON — easy for Claude to parse and use as a tool.
+
+Requires: `pip install sentence-transformers` for semantic search (optional but recommended).
+
+---
+
 ## Obsidian Tips
 
 - Use the **Graph View** to see how concepts link to each other via `[[backlinks]]`

@@ -17,7 +17,14 @@ flowchart TD
         A4[Notes]
     end
 
+    subgraph existing["📂 Existing Vaults"]
+        B1[Obsidian vault]
+        B2[Another KB vault]
+    end
+
     ingest["/kb-ingest"]
+    import_["/kb-import"]
+    mergevault["/kb-merge-vault"]
     raw["raw/\nstaged content"]
     compile["/kb-compile"]
 
@@ -43,6 +50,8 @@ flowchart TD
     end
 
     input --> ingest --> raw --> compile --> wiki
+    B1 --> import_ --> raw & concepts
+    B2 --> mergevault --> wiki
     compile -. auto .-> reflect
     reflect -- synthesis articles --> concepts
     wiki --> search
@@ -94,7 +103,7 @@ bash setup.sh ~/knowledge-base
 - Create the KB directory structure
 - Initialize it as a git repo
 - Write `~/.claude/kb-config.json` pointing to your KB
-- Copy all 7 skills into `~/.claude/skills/` so Claude Code can find them
+- Copy all 9 skills into `~/.claude/skills/` so Claude Code can find them
 - Copy `kb_search.py` into your KB directory
 
 > **Note:** Skills are installed globally into `~/.claude/skills/`. You can use them from any Claude Code session, not just from the repo directory.
@@ -307,7 +316,9 @@ Requires: `pip install sentence-transformers` for semantic fallback (recommended
 ## Typical Workflow
 
 ```
-# Ingest a few sources
+# --- Starting fresh ---
+
+# Ingest sources one by one
 /kb-ingest https://lilianweng.github.io/posts/2023-06-23-agent/
 /kb-ingest https://arxiv.org/abs/2005.14165
 /kb-ingest My intuition: RLHF works because human preferences act as a soft constraint on the policy
@@ -322,13 +333,23 @@ Requires: `pip install sentence-transformers` for semantic fallback (recommended
 # Periodically run health checks and merge duplicates
 /kb-lint
 /kb-merge
+
+# --- Migrating from an existing Obsidian vault ---
+
+# Smart import — LLM routes each note to wiki/concepts/ or raw/notes/
+/kb-import ~/my-old-obsidian-vault
+
+# --- Combining two KB vaults ---
+
+# Merge a work KB into your personal KB
+/kb-merge-vault ~/knowledge-base-work
 ```
 
 ---
 
 ## What Claude Code Skills Are
 
-Claude Code skills are plain markdown files that tell Claude how to behave when you type a trigger command (e.g. `/kb-ingest`). They live in `~/.claude/skills/` and are automatically available in every Claude Code session after installation. This repo ships 7 skills — `setup.sh` installs them all.
+Claude Code skills are plain markdown files that tell Claude how to behave when you type a trigger command (e.g. `/kb-ingest`). They live in `~/.claude/skills/` and are automatically available in every Claude Code session after installation. This repo ships 9 skills — `setup.sh` installs them all.
 
 ---
 
